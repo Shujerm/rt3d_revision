@@ -664,22 +664,61 @@ int CopyTIM2Buffer(int sourcex, int sourcey, int destx, int desty, int rot)
 			switch (rot)
 			{
 				case 1:		// 1: flip x
+				{
+					dx = (31 - x);
+					dy = y;
+					break;
+				}
 				case 2:		// 2: rot 90
+				{
+					dx = (31 - y);
+					dy = x;
+					break;
+				}
 				case 3:		// 3: flip x + rot 90
+				{
+					int tx = (31 - x);
+					int ty = y;
+					dx = (31 - ty);
+					dy = tx;
+					break;
+				}
 				case 4:		// 4: rot 180
+				{
+					dx = (31 - y);
+					dy = (31 - x);
+					break;
+				}
 				case 5:		// 5: flip y
+				{
+					dx = x;
+					dy = (31 - y);
+					break;
+				}
 				case 6:		// 6: rot 270
-				case 7:		// 7: flip y + rot 270
+				{
+					dx = y;
+					dy = (31 - x);
+					break;
+				}
+				case 7:		// 7: rot 270 + flip y
+				{
+					int tx = y;
+					int ty = (31 - x);
+					dx = tx;
+					dy = (31 - ty);
+					break;
+				}
 				case 0:		// 0: normal
 				default:
 				{
-					dx = destx + x;
-					dy = desty + y;
+					dx = x;
+					dy = y;
 					break;
 				}
 			}
 
-			SetBufferPixel(dx, dy, c);
+			SetBufferPixel(destx + dx, desty + dy, c);
 		}
 	}
 
