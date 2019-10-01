@@ -652,7 +652,36 @@ void SetBufferPixel(int x, int y, Color c)
 
 int CopyTIM2Buffer(int sourcex, int sourcey, int destx, int desty, int rot)
 {
-	// TO DO: Implement this function (see slides)
+	for (int y = 0; y < 32; y++)
+	{
+		for (int x = 0; x < 32; x++)
+		{
+			Color c = GetPixel(sourcex + x, sourcey + y);
+
+			int dx = 0;
+			int dy = 0;
+
+			switch (rot)
+			{
+				case 1:		// 1: flip x
+				case 2:		// 2: rot 90
+				case 3:		// 3: flip x + rot 90
+				case 4:		// 4: rot 180
+				case 5:		// 5: flip y
+				case 6:		// 6: rot 270
+				case 7:		// 7: flip y + rot 270
+				case 0:		// 0: normal
+				default:
+				{
+					dx = destx + x;
+					dy = desty + y;
+					break;
+				}
+			}
+
+			SetBufferPixel(dx, dy, c);
+		}
+	}
 
 	return 0;
 }
@@ -665,9 +694,22 @@ int CopyTIM2Buffer(int sourcex, int sourcey, int destx, int desty, int rot)
 //				(32-bit) and copying it automatically propogates any colour changes to the map
 int DrawSegments2Buffer(SEGMENT* pSegments)
 {
-	// TO DO: Implement this function (see slides)
 	// Note the code below should copy the TIM at index "tileIndex" to the map grid square "mapIndex" 
 	// CopyTIM2Buffer(_TIMXPOS(tileIndex), _TIMYPOS(tileIndex), _MAPXPOS(mapIndex), _MAPYPOS(mapIndex), tileRot);
+
+	for (int s = 0; s < 256; s++) // 16x16 segments
+	{
+		SEGMENT segment = pSegments[s];
+		for (int t = 0; t < 16; t++) // 4x4 polystruct-tiles per segment
+		{
+			POLYSTRUCT tile = segment.strTilePolyStruct[t]; // tile: 0-255 tile index, 0-7 orientation
+			int x = ((s % 16) * 4) + (t % 4);
+			int y = (floor(s / 16) * 4) + floor(t / 4);
+
+			CopyTIM2Buffer(_TIMXPOS(tile.cTileRef), _TIMYPOS(tile.cTileRef), (x * 32), (y * 32), tile.cRot);
+		}
+	}
+	
 
 	return 0;
 }
