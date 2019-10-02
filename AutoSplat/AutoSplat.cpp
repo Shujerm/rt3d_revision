@@ -39,6 +39,8 @@ using namespace std;
 #define MESSX	534
 #define	MESSY	1056
 
+#define IMAGESIZE 32
+
 uint32_t* g_pMapBuffer = 0;
 uint32_t* g_pThumbBuffer = 0;
 vector<SHARED_CLUT> g_vCLUTs;
@@ -652,11 +654,9 @@ void SetBufferPixel(int x, int y, Color c)
 
 int CopyTIM2Buffer(int sourcex, int sourcey, int destx, int desty, int rot)
 {
-	const int imageSize = 32;
-
-	for (int y = 0; y < imageSize; y++)
+	for (int y = 0; y < IMAGESIZE; y++)
 	{
-		for (int x = 0; x < imageSize; x++)
+		for (int x = 0; x < IMAGESIZE; x++)
 		{
 			Color c = GetPixel(sourcex + x, sourcey + y);
 
@@ -667,48 +667,48 @@ int CopyTIM2Buffer(int sourcex, int sourcey, int destx, int desty, int rot)
 			{
 				case 1:		// 1: flip x
 				{
-					dx = ((imageSize - 1) - x);
+					dx = ((IMAGESIZE - 1) - x);
 					dy = y;
 					break;
 				}
 				case 2:		// 2: rot 90
 				{
-					dx = ((imageSize - 1) - y);
+					dx = ((IMAGESIZE - 1) - y);
 					dy = x;
 					break;
 				}
 				case 3:		// 3: flip x + rot 90
 				{
-					int tx = ((imageSize - 1) - x);
+					int tx = ((IMAGESIZE - 1) - x);
 					int ty = y;
-					dx = ((imageSize - 1) - ty);
+					dx = ((IMAGESIZE - 1) - ty);
 					dy = tx;
 					break;
 				}
 				case 4:		// 4: rot 180
 				{
-					dx = ((imageSize - 1) - x);
-					dy = ((imageSize - 1) - y);
+					dx = ((IMAGESIZE - 1) - x);
+					dy = ((IMAGESIZE - 1) - y);
 					break;
 				}
 				case 5:		// 5: flip y
 				{
 					dx = x;
-					dy = ((imageSize - 1) - y);
+					dy = ((IMAGESIZE - 1) - y);
 					break;
 				}
 				case 6:		// 6: rot 270
 				{
 					dx = y;
-					dy = ((imageSize - 1) - x);
+					dy = ((IMAGESIZE - 1) - x);
 					break;
 				}
 				case 7:		// 7: rot 270 + flip y
 				{
 					int tx = y;
-					int ty = ((imageSize - 1) - x);
+					int ty = ((IMAGESIZE - 1) - x);
 					dx = tx;
-					dy = ((imageSize - 1) - ty);
+					dy = ((IMAGESIZE - 1) - ty);
 					break;
 				}
 				case 0:		// 0: normal
@@ -747,7 +747,7 @@ int DrawSegments2Buffer(SEGMENT* pSegments)
 			int x = ((s % 16) * 4) + (t % 4);
 			int y = (floor(s / 16) * 4) + floor(t / 4);
 
-			CopyTIM2Buffer(_TIMXPOS(tile.cTileRef), _TIMYPOS(tile.cTileRef), (x * 32), (y * 32), tile.cRot);
+			CopyTIM2Buffer(_TIMXPOS(tile.cTileRef), _TIMYPOS(tile.cTileRef), (x * IMAGESIZE), (y * IMAGESIZE), tile.cRot);
 		}
 	}
 	
