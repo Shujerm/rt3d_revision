@@ -652,9 +652,11 @@ void SetBufferPixel(int x, int y, Color c)
 
 int CopyTIM2Buffer(int sourcex, int sourcey, int destx, int desty, int rot)
 {
-	for (int y = 0; y < 32; y++)
+	const int imageSize = 32;
+
+	for (int y = 0; y < imageSize; y++)
 	{
-		for (int x = 0; x < 32; x++)
+		for (int x = 0; x < imageSize; x++)
 		{
 			Color c = GetPixel(sourcex + x, sourcey + y);
 
@@ -665,48 +667,48 @@ int CopyTIM2Buffer(int sourcex, int sourcey, int destx, int desty, int rot)
 			{
 				case 1:		// 1: flip x
 				{
-					dx = (31 - x);
+					dx = ((imageSize - 1) - x);
 					dy = y;
 					break;
 				}
 				case 2:		// 2: rot 90
 				{
-					dx = (31 - y);
+					dx = ((imageSize - 1) - y);
 					dy = x;
 					break;
 				}
 				case 3:		// 3: flip x + rot 90
 				{
-					int tx = (31 - x);
+					int tx = ((imageSize - 1) - x);
 					int ty = y;
-					dx = (31 - ty);
+					dx = ((imageSize - 1) - ty);
 					dy = tx;
 					break;
 				}
 				case 4:		// 4: rot 180
 				{
-					dx = (31 - y);
-					dy = (31 - x);
+					dx = ((imageSize - 1) - x);
+					dy = ((imageSize - 1) - y);
 					break;
 				}
 				case 5:		// 5: flip y
 				{
 					dx = x;
-					dy = (31 - y);
+					dy = ((imageSize - 1) - y);
 					break;
 				}
 				case 6:		// 6: rot 270
 				{
 					dx = y;
-					dy = (31 - x);
+					dy = ((imageSize - 1) - x);
 					break;
 				}
 				case 7:		// 7: rot 270 + flip y
 				{
 					int tx = y;
-					int ty = (31 - x);
+					int ty = ((imageSize - 1) - x);
 					dx = tx;
-					dy = (31 - ty);
+					dy = ((imageSize - 1) - ty);
 					break;
 				}
 				case 0:		// 0: normal
