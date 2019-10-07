@@ -654,6 +654,7 @@ void SetBufferPixel(int x, int y, Color c)
 
 int CopyTIM2Buffer(int sourcex, int sourcey, int destx, int desty, int rot)
 {
+	/*
 	for (int y = 0; y < IMAGESIZE; y++)
 	{
 		for (int x = 0; x < IMAGESIZE; x++)
@@ -721,6 +722,141 @@ int CopyTIM2Buffer(int sourcex, int sourcey, int destx, int desty, int rot)
 			}
 
 			SetBufferPixel(destx + dx, desty + dy, c);
+		}
+	}
+	*/
+
+	switch (rot)
+	{
+		case 1:		// 1: flip x
+		{
+			for (int y = 0; y < IMAGESIZE; y++)
+			{
+				for (int x = 0; x < IMAGESIZE; x++)
+				{
+					Color c = GetPixel(sourcex + x, sourcey + y);
+
+					int dx = ((IMAGESIZE - 1) - x);
+					int dy = y;
+
+					SetBufferPixel(destx + dx, desty + dy, c);
+				}
+			}
+			break;
+		}
+		case 2:		// 2: rot 90
+		{
+			for (int y = 0; y < IMAGESIZE; y++)
+			{
+				for (int x = 0; x < IMAGESIZE; x++)
+				{
+					Color c = GetPixel(sourcex + x, sourcey + y);
+
+					int dx = ((IMAGESIZE - 1) - y);
+					int dy = x;
+
+					SetBufferPixel(destx + dx, desty + dy, c);
+				}
+			}
+			break;
+		}
+		case 3:		// 3: flip x + rot 90
+		{
+			for (int y = 0; y < IMAGESIZE; y++)
+			{
+				for (int x = 0; x < IMAGESIZE; x++)
+				{
+					Color c = GetPixel(sourcex + x, sourcey + y);
+
+					int tx = ((IMAGESIZE - 1) - x);
+					int ty = y;
+					int dx = ((IMAGESIZE - 1) - ty);
+					int dy = tx;
+
+					SetBufferPixel(destx + dx, desty + dy, c);
+				}
+			}
+			break;
+		}
+		case 4:		// 4: rot 180
+		{
+			for (int y = 0; y < IMAGESIZE; y++)
+			{
+				for (int x = 0; x < IMAGESIZE; x++)
+				{
+					Color c = GetPixel(sourcex + x, sourcey + y);
+
+					int dx = ((IMAGESIZE - 1) - x);
+					int dy = ((IMAGESIZE - 1) - y);
+
+					SetBufferPixel(destx + dx, desty + dy, c);
+				}
+			}
+			break;
+		}
+		case 5:		// 5: flip y
+		{
+			for (int y = 0; y < IMAGESIZE; y++)
+			{
+				for (int x = 0; x < IMAGESIZE; x++)
+				{
+					Color c = GetPixel(sourcex + x, sourcey + y);
+
+					int dx = x;
+					int dy = ((IMAGESIZE - 1) - y);
+
+					SetBufferPixel(destx + dx, desty + dy, c);
+				}
+			}
+			break;
+		}
+		case 6:		// 6: rot 270
+		{
+			for (int y = 0; y < IMAGESIZE; y++)
+			{
+				for (int x = 0; x < IMAGESIZE; x++)
+				{
+					Color c = GetPixel(sourcex + x, sourcey + y);
+
+					int dx = y;
+					int dy = ((IMAGESIZE - 1) - x);
+
+					SetBufferPixel(destx + dx, desty + dy, c);
+				}
+			}
+			break;
+		}
+		case 7:		// 7: rot 270 + flip y
+		{
+			for (int y = 0; y < IMAGESIZE; y++)
+			{
+				for (int x = 0; x < IMAGESIZE; x++)
+				{
+					Color c = GetPixel(sourcex + x, sourcey + y);
+
+					int tx = y;
+					int ty = ((IMAGESIZE - 1) - x);
+					int dx = tx;
+					int dy = ((IMAGESIZE - 1) - ty);
+
+					SetBufferPixel(destx + dx, desty + dy, c);
+				}
+			}
+			break;
+		}
+		case 0:		// 0: normal
+		default:
+		{
+			for (int y = 0; y < IMAGESIZE; y++)
+			{
+				for (int x = 0; x < IMAGESIZE; x++)
+				{
+					Color c = GetPixel(sourcex + x, sourcey + y);
+
+					SetBufferPixel(destx + x, desty + y, c);
+				}
+			}
+			break;
 		}
 	}
 
